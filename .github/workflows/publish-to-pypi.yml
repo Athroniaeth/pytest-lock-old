@@ -1,0 +1,21 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Poetry
+      run: curl -sSL https://install.python-poetry.org | python
+
+    - name: Build package
+      run: poetry build
+
+    - name: Publish to PyPI
+      run: poetry publish --username=__token__ --password=${{ secrets.PYPI_API_TOKEN }}
